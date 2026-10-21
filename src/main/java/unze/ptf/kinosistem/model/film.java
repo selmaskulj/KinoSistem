@@ -1,4 +1,4 @@
-﻿package unze.ptf.kinosistem.model;
+package unze.ptf.kinosistem.model;
 
 import java.util.ArrayList;
 import java.util.List;

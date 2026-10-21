@@ -1,4 +1,4 @@
-﻿package unze.ptf.kinosistem.data;
+package unze.ptf.kinosistem.data;
 
 import org.springframework.stereotype.Component;
 import unze.ptf.kinosistem.model.film;

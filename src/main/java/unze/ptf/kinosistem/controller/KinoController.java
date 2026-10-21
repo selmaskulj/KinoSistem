@@ -1,4 +1,4 @@
-﻿package unze.ptf.kinosistem.controller;
+package unze.ptf.kinosistem.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import unze.ptf.kinosistem.data.DemoData;
 import unze.ptf.kinosistem.model.film;
 import unze.ptf.kinosistem.model.karta;
+
 import java.util.List;
 
 @Controller
@@ -15,14 +16,13 @@ public class KinoController {
 
     public KinoController(DemoData data) {
         this.data = data;
-}
+    }
 
-
-    //mapiranja koja vode do template stranica
+    // Mapiranja koja vode do template stranica
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/characters";
+        return "redirect:/a";
     }
 
     @GetMapping("/a")
@@ -38,20 +38,22 @@ public class KinoController {
     }
 
     @GetMapping("/a/action/{id}")
-    public String detaljiFilma(
-          @PathVariable Long id, Model model) {
+    public String detaljiFilma(@PathVariable Long id, Model model) {
         film film = data.findfilm(id);
 
-        if (film == null) {return "redirect:/a";
-    }
+        if (film == null) {
+            return "redirect:/a";
+        }
 
-        List<karta> kartaFilma = data.findAllkarte()
+        List<karta> karteFilma = data.findAllkarte()
                 .stream()
-                .filter(karte -> karta.getFilm() != null && karta.getFilm().equals(id))
+                .filter(k -> k.getFilm() != null
+                        && k.getFilm().equals(id))
                 .toList();
 
         model.addAttribute("film", film);
-        model.addAttribute("karte", kartaFilma);
+        model.addAttribute("karte", karteFilma);
 
         return "action";
-    }}
+    }
+}
