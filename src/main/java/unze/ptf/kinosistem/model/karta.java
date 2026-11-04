@@ -1,16 +1,28 @@
+
 package unze.ptf.kinosistem.model;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import java.util.List;
+
+@Entity
+
 
 public class karta {
 
-    private Long id;
-    private double cijena;
-    private static film film; //trenutna snaga
-    private int red;  // 0..5
-    private int sjediste; //sakupljeni bodovi
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "film_id")
+    private film film;
+    private double cijena;
+    private int red;
+    private int sjediste;
+
+    public karta() {}
 
     public karta(Long id, film film, double cijena, int red, int sjediste) {
         this.id = id;
@@ -20,49 +32,18 @@ public class karta {
         this.sjediste = sjediste;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public int getSjediste() {
-        return sjediste;
-    }
+    public film getFilm() { return film; }
+    public void setFilm(film film) { this.film = film; }
 
-    public int getRed() {
-        return red;
-    }
+    public double getCijena() { return cijena; }
+    public void setCijena(double cijena) { this.cijena = cijena; }
 
-    public static film getFilm() {
-        return film;
-    }
+    public int getRed() { return red; }
+    public void setRed(int red) { this.red = red; }
 
-    public double getCijena() {
-        return cijena;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setSjediste(int sjediste) {
-        this.sjediste = sjediste;
-    }
-
-    public void setRed(int red) {
-        this.red = red;
-    }
-
-    public void setFilm(film film) {
-        this.film = film;
-    }
-
-    public void setCijena(double cijena) {
-        this.cijena = cijena;
-    }
-
-    public karta() {
-
-    }
-
+    public int getSjediste() { return sjediste; }
+    public void setSjediste(int sjediste) { this.sjediste = sjediste; }
 }
-

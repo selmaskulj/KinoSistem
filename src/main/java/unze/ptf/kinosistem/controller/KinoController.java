@@ -1,3 +1,4 @@
+
 package unze.ptf.kinosistem.controller;
 
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,6 @@ public class KinoController {
         this.data = data;
     }
 
-    // Mapiranja koja vode do template stranica
-
     @GetMapping("/")
     public String home() {
         return "redirect:/a";
@@ -39,19 +38,19 @@ public class KinoController {
 
     @GetMapping("/a/action/{id}")
     public String detaljiFilma(@PathVariable Long id, Model model) {
-        film film = data.findfilm(id);
+        film odabraniFilm = data.findfilm(id);
 
-        if (film == null) {
+        if (odabraniFilm == null) {
             return "redirect:/a";
         }
 
         List<karta> karteFilma = data.findAllkarte()
                 .stream()
                 .filter(k -> k.getFilm() != null
-                        && k.getFilm().equals(id))
+                        && k.getFilm().getId().equals(id))
                 .toList();
 
-        model.addAttribute("film", film);
+        model.addAttribute("film", odabraniFilm);
         model.addAttribute("karte", karteFilma);
 
         return "action";
