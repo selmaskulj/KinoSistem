@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html lang="bs" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Projekcija</title>
@@ -29,9 +29,9 @@
             <form th:action="@{/projekcije/update/{id}(id=${p.id})}" method="post" style="padding: 0; background: none; box-shadow: none; display: flex; gap: 5px;">
                 <input type="text" name="termin" th:value="${p.termin}" required style="margin-bottom:0; width: 100px;" />
                 <input type="number" step="0.01" name="cijena" th:value="${p.cijena}" required style="margin-bottom:0; width: 80px;" />
-                <button type="submit" style="width: auto; padding: 5px 10px; background-color: #007bff;">Ažuriraj</button>
+            <button type="submit" style="width: auto; padding: 5px 10px; background-color: #007bff;">Ažuriraj</button>
             </form>
-            <a th:href="@{/projekcije/delete/{id}(id=${p.id})}" style="color: red; text-decoration: none; font-size: 12px; display: inline-block; margin-top: 5px;">Obriši</a>
+        <a th:href="@{/projekcije/delete/{id}(id=${p.id})}" style="color: red; text-decoration: none; font-size: 12px; display: inline-block; margin-top: 5px;">Obriši</a>
         </td>
     </tr>
     </tbody>
@@ -52,7 +52,7 @@
         <option th:each="f : ${filmovi}" th:value="${f.id}" th:text="${f.naziv}"></option>
     </select>
 
-    <button type="submit">Sačuvaj Projekciju</button>
+    <button type="submit">Sačuvaj projekciju</button>
 </form>
 
 
