@@ -1,0 +1,108 @@
+﻿
+<!DOCTYPE html>
+<html lang="bs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KinoSistem | Detalji filma</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/a" class="logo">🎬 Kino<span>Sistem</span></a>
+    <nav>
+        <a href="/a">Filmovi</a>
+        <a href="/b">Karte</a>
+    </nav>
+</header>
+
+<main class="container detail-page">
+
+    <a href="/a" class="text-link back-link">← Nazad na filmove</a>
+
+    <section class="detail-card">
+        <img class="detail-poster"
+             th:src="${film.slika != null ? film.slika : '/images/no-poster.jpg'}"
+             th:alt="${film.naziv}"
+             onerror="this.onerror=null;this.src='/images/no-poster.jpg'">
+
+        <div class="detail-info">
+            <span class="eyebrow">FILMSKA KOLEKCIJA</span>
+            <h1 th:text="${film.naziv}"></h1>
+
+            <span class="badge" th:text="${film.zanr}"></span>
+
+            <div class="detail-meta">
+                <div>
+                    <span class="muted">GODINA</span>
+                    <strong th:text="${film.godina}"></strong>
+                </div>
+                <div>
+                    <span class="muted">TRAJANJE</span>
+                    <strong th:text="${film.trajanje} + ' min'"></strong>
+                </div>
+                <div>
+                    <span class="muted">ID FILMA</span>
+                    <strong th:text="${film.id}"></strong>
+                </div>
+            </div>
+
+            <p class="description">
+                Otkrij detalje filma i pregledaj dostupne karte.
+                Izaberi svoje sjedište i pripremi se za filmsku avanturu.
+            </p>
+
+            <a href="/b" class="btn">Pregled svih karata →</a>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">SJEDIŠTA I CIJENE</span>
+                <h2>Karte za ovaj film</h2>
+            </div>
+            <span class="badge"
+                  th:text="${#lists.size(karte)} + ' karata'"></span>
+        </div>
+
+        <div class="table-panel">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID karte</th>
+                    <th>Cijena</th>
+                    <th>Red</th>
+                    <th>Sjedište</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="karta : ${karte}">
+                    <td th:text="${karta.id}"></td>
+                    <td class="price"
+                        th:text="${#numbers.formatDecimal(karta.cijena, 1, 2)} + ' KM'">
+                    </td>
+                    <td><span class="seat" th:text="${karta.red}"></span></td>
+                    <td><span class="seat" th:text="${karta.sjediste}"></span></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(karte)}">
+                    <td colspan="4" class="empty">
+                        Nema karata za ovaj film.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="summary">
+            🎟 Broj karata za ovaj film:
+            <strong th:text="${#lists.size(karte)}"></strong>
+        </div>
+    </section>
+</main>
+
+<footer>KinoSistem · Tvoje omiljeno kino mjesto 🎬</footer>
+
+</body>
+</html>

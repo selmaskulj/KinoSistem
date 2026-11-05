@@ -1,0 +1,118 @@
+﻿
+<!DOCTYPE html>
+<html lang="bs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KinoSistem | Filmovi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/a" class="logo">🎬 Kino<span>Sistem</span></a>
+    <nav>
+        <a href="/a" class="active">Filmovi</a>
+        <a href="/b">Karte</a>
+        <a href="/projekcije">Projekcije</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="eyebrow">DOBRO DOŠLI U KINO</span>
+        <h1>Svaka priča počinje<br>jednim filmom.</h1>
+        <p>Otkrij svoje sljedeće filmsko iskustvo.</p>
+        <a href="#filmovi" class="btn">Istraži filmove ↓</a>
+    </div>
+</section>
+
+<main class="container" id="filmovi">
+
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">NAŠA KOLEKCIJA</span>
+            <h2>Popularni filmovi</h2>
+        </div>
+
+        <input
+                id="pretraga"
+                class="search"
+                type="text"
+                placeholder="🔍 Pretraži filmove...">
+    </div>
+
+    <div class="movie-grid">
+
+        <article class="movie-card" th:each="film : ${filmovi}">
+
+            <a th:href="@{/a/action/{id}(id=${film.id})}"
+               class="poster-link">
+
+                <img
+                        class="poster"
+                        th:src="${film.slika != null and !film.slika.isEmpty() ? (film.slika.startsWith('/') ? film.slika : '/images/' + film.slika) : '/images/no-poster.png'}"
+                        th:alt="${film.naziv}"
+                        onerror="this.onerror=null;this.src='/images/no-poster.png'">
+
+            </a>
+
+            <div class="movie-info">
+
+                <span class="badge" th:text="${film.zanr}"></span>
+
+                <h3 th:text="${film.naziv}"></h3>
+
+                <p class="muted">
+                    <span th:text="${film.godina}"></span>
+                    <span> · </span>
+                    <span th:text="${film.trajanje}"></span> min
+                </p>
+
+                <a class="btn btn-small"
+                   th:href="@{/a/action/{id}(id=${film.id})}">
+                    Detalji filma →
+                </a>
+
+            </div>
+        </article>
+
+    </div>
+
+    <p id="nemaRezultata" class="empty" hidden>
+        Nema filmova koji odgovaraju pretrazi.
+    </p>
+
+</main>
+
+<footer>
+    KinoSistem · Tvoje omiljeno kino mjesto 🎬
+</footer>
+
+<script>
+    const pretraga = document.getElementById("pretraga");
+    const kartice = document.querySelectorAll(".movie-card");
+    const poruka = document.getElementById("nemaRezultata");
+
+    pretraga.addEventListener("input", function () {
+        const tekst = this.value.toLowerCase();
+        let broj = 0;
+
+        kartice.forEach(kartica => {
+            const prikazi = kartica.textContent
+                .toLowerCase()
+                .includes(tekst);
+
+            kartica.style.display = prikazi ? "" : "none";
+
+            if (prikazi) {
+                broj++;
+            }
+        });
+
+        poruka.hidden = broj !== 0;
+    });
+</script>
+
+</body>
+</html>

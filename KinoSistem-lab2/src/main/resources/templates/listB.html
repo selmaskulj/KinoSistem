@@ -1,0 +1,101 @@
+﻿
+<!DOCTYPE html>
+<html lang="bs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KinoSistem | Karte</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/a" class="logo">🎬 Kino<span>Sistem</span></a>
+    <nav>
+        <a href="/a">Filmovi</a>
+        <a href="/b" class="active">Karte</a>
+        <a href="/projekcije">Projekcije</a>
+    </nav>
+</header>
+
+<section class="hero hero-small">
+    <div class="hero-content">
+        <span class="eyebrow">TVOJE KINO ISKUSTVO</span>
+        <h1>Pregled karata</h1>
+        <p>Pregled cijena, redova, sjedišta i filmova.</p>
+    </div>
+</section>
+
+<main class="container">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">REZERVACIJE</span>
+            <h2>Sve karte</h2>
+        </div>
+        <input id="pretraga" class="search"
+               placeholder="🔍 Pretraži karte...">
+    </div>
+
+    <div class="table-panel">
+        <table id="tabelaKarata">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Film</th>
+                <th>Cijena</th>
+                <th>Red</th>
+                <th>Sjedište</th>
+                <th>Detalji</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="karta : ${karte}">
+                <td th:text="${karta.id}"></td>
+                <td>
+                    <span th:if="${karta.film != null}"
+                          th:text="${karta.film.naziv}"></span>
+                    <span th:if="${karta.film == null}">Bez filma</span>
+                </td>
+                <td class="price"
+                    th:text="${#numbers.formatDecimal(karta.cijena, 1, 2)} + ' KM'">
+                </td>
+                <td><span class="seat" th:text="${karta.red}"></span></td>
+                <td><span class="seat" th:text="${karta.sjediste}"></span></td>
+                <td>
+                    <a th:if="${karta.film != null}"
+                       th:href="@{/a/action/{id}(id=${karta.film.id})}"
+                       class="text-link">Pogledaj film →</a>
+                    <span th:if="${karta.film == null}">—</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(karte)}">
+                <td colspan="6" class="empty">
+                    Trenutno nema karata.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="summary">
+        🎟 Ukupan broj karata:
+        <strong th:text="${#lists.size(karte)}"></strong>
+    </div>
+</main>
+
+<footer>KinoSistem · Tvoje omiljeno kino mjesto 🎬</footer>
+
+<script>
+    document.getElementById("pretraga").addEventListener("input", function () {
+        const tekst = this.value.toLowerCase();
+
+        document.querySelectorAll("#tabelaKarata tbody tr").forEach(red => {
+            if (red.querySelector("td[colspan]")) return;
+            red.style.display =
+                red.textContent.toLowerCase().includes(tekst) ? "" : "none";
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="bs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KinoSistem | Projekcije</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        /* Osnovni izgled stranice */
+        body {
+            background: #f7f7f5;
+        }
+
+        /* Naslovni dio */
+        .hero h1 {
+            color: white !important;
+        }
+
+        .hero p {
+            color: white !important;
+        }
+
+        /* Naslovi sekcija - uvijek vidljivi */
+        .section-heading h2,
+        .add-projection h2 {
+            color: #263f69 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .section-heading .eyebrow,
+        .add-projection .eyebrow {
+            color: #61884B !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .section-heading {
+            margin-top: 45px;
+            margin-bottom: 22px;
+        }
+
+        /* Tabela */
+        .projection-wrapper {
+            overflow-x: auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .projection-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .projection-table th {
+            padding: 16px;
+            color: #263f69 !important;
+            background: #f3f5f1;
+            font-size: 13px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e5e9e1;
+        }
+
+        .projection-table td {
+            padding: 16px;
+            color: #333333 !important;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .projection-table tr:hover {
+            background: #fafbf8;
+        }
+
+        /* Polja za ažuriranje */
+        .projection-table input {
+            width: 115px;
+            padding: 10px;
+            border: 1px solid #d5dcd1;
+            border-radius: 8px;
+            background: #ffffff !important;
+            color: #263f69 !important;
+            font-size: 14px;
+        }
+
+        .projection-table input::placeholder {
+            color: #888888 !important;
+            opacity: 1;
+        }
+
+        .update-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .update-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #263f69;
+            color: #ffffff !important;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .update-btn:hover {
+            background: #3b5987;
+        }
+
+        /* Forma za dodavanje */
+        .add-projection {
+            margin: 45px 0;
+            padding: 35px;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .add-projection p {
+            color: #666666 !important;
+            opacity: 1 !important;
+        }
+
+        .add-projection label {
+            display: block;
+            margin: 20px 0 8px;
+            color: #263f69 !important;
+            font-weight: 600;
+            font-size: 15px;
+            opacity: 1 !important;
+        }
+
+        .add-projection input,
+        .add-projection select {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #d5dcd1;
+            border-radius: 9px;
+            background-color: #ffffff !important;
+            color: #263f69 !important;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .add-projection input::placeholder {
+            color: #888888 !important;
+            opacity: 1;
+        }
+
+        .add-projection input:focus,
+        .add-projection select:focus {
+            border-color: #61884B;
+            box-shadow: 0 0 0 3px rgba(97, 136, 75, 0.12);
+        }
+
+        .add-projection select option {
+            background: #ffffff;
+            color: #263f69;
+        }
+
+        .add-projection button {
+            margin-top: 25px;
+            border: none;
+            cursor: pointer;
+            color: #ffffff !important;
+        }
+
+        .add-projection button:hover {
+            opacity: 0.9;
+        }
+
+        /* Poruka kada nema projekcija */
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #666666 !important;
+        }
+
+        /* Footer */
+        footer {
+            color: #ffffff;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .add-projection {
+                padding: 22px;
+            }
+
+            .projection-wrapper {
+                padding: 12px;
+            }
+
+            .projection-table th,
+            .projection-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a href="/a" class="logo">🎬 Kino<span>Sistem</span></a>
+
+    <nav>
+        <a href="/a">Filmovi</a>
+        <a href="/b">Karte</a>
+        <a href="/projekcije" class="active">Projekcije</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="eyebrow">RASPORED FILMSKIH PROJEKCIJA</span>
+        <h1>Pronađi svoj<br>sljedeći termin.</h1>
+        <p>Pregledaj termine i cijene projekcija u našem kinu.</p>
+        <a href="#projekcije" class="btn">Pregledaj projekcije ↓</a>
+    </div>
+</section>
+
+<main class="container" id="projekcije">
+
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">KINO RASPORED</span>
+            <h2>Dostupne projekcije</h2>
+        </div>
+    </div>
+
+    <div class="projection-wrapper">
+
+        <table class="projection-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Termin</th>
+                <th>Cijena</th>
+                <th>Film</th>
+                <th>Ažuriranje</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="p : ${projekcije}">
+                <td th:text="${p.id}"></td>
+
+                <td th:text="${p.termin}"></td>
+
+                <td th:text="${p.cijena + ' KM'}"></td>
+
+                <td th:text="${p.film != null ? p.film.naziv : 'Nema filma'}"></td>
+
+                <td>
+                    <form class="update-form"
+                          th:action="@{/projekcije/update/{id}(id=${p.id})}"
+                          method="post">
+
+                        <input type="text"
+                               name="termin"
+                               th:value="${p.termin}"
+                               placeholder="Novi termin"
+                               required>
+
+                        <input type="number"
+                               name="cijena"
+                               th:value="${p.cijena}"
+                               step="0.01"
+                               min="0"
+                               placeholder="Nova cijena"
+                               required>
+
+                        <button type="submit" class="update-btn">
+                            Ažuriraj
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p class="empty" th:if="${#lists.isEmpty(projekcije)}">
+            Trenutno nema dodanih projekcija.
+        </p>
+
+    </div>
+
+    <section class="add-projection">
+
+        <span class="eyebrow">NOVA PROJEKCIJA</span>
+
+        <h2>Dodaj projekciju</h2>
+
+        <p>Unesi termin, cijenu i odaberi film.</p>
+
+        <form th:action="@{/projekcije/sacuvaj}" method="post">
+
+            <label for="termin">Termin:</label>
+
+            <input type="text"
+                   id="termin"
+                   name="termin"
+                   placeholder="npr. 20:00"
+                   required>
+
+            <label for="cijena">Cijena (KM):</label>
+
+            <input type="number"
+                   id="cijena"
+                   name="cijena"
+                   step="0.01"
+                   min="0"
+                   placeholder="npr. 8.50"
+                   required>
+
+            <label for="filmId">Izaberi film:</label>
+
+            <select id="filmId" name="filmId" required>
+                <option value="">-- Odaberi film --</option>
+
+                <option th:each="f : ${filmovi}"
+                        th:value="${f.id}"
+                        th:text="${f.naziv}">
+                </option>
+            </select>
+
+            <button type="submit" class="btn">
+                Sačuvaj projekciju
+            </button>
+
+        </form>
+    </section>
+
+</main>
+
+<footer>
+    KinoSistem · Tvoje omiljeno kino mjesto 🎬
+</footer>
+
+</body>
+</html>
